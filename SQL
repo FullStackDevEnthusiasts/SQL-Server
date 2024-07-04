@@ -362,4 +362,554 @@
 - Key properties of transactions (ACID properties) include Atomicity, Consistency, Isolation, and Durability.
 - Transactions allow operations to be committed or rolled back, ensuring that either all changes are applied successfully or none are, thus maintaining database stability and reliability.
 
+### 51. What is a cursor in SQL Server?
+- A cursor is a database object used to retrieve, manipulate, and navigate through a result set one row at a time.
+- Cursors can be used to perform row-by-row operations in a result set.
+- There are different types of cursors, such as static, dynamic, forward-only, and keyset-driven.
+- While cursors provide flexibility for row-based operations, they can be slow and resource-intensive, so they should be used judiciously.
+
+### 52. What is a temporary table in SQL Server, and how is it used?
+- A temporary table is a table that is created and used temporarily within a session or batch.
+- Temporary tables are stored in the tempdb database and are automatically dropped when the session ends or the batch completes.
+- There are two types of temporary tables: local temporary tables (prefixed with `#`) and global temporary tables (prefixed with `##`).
+- Temporary tables are useful for storing intermediate results, complex queries, and session-specific data manipulation.
+
+### 53. What is a common table expression (CTE) in SQL Server?
+- A CTE is a temporary result set that can be referenced within a SELECT, INSERT, UPDATE, or DELETE statement.
+- CTEs are defined using the `WITH` clause and can improve readability and maintainability of complex queries.
+- CTEs can be recursive, allowing for operations such as hierarchical data retrieval.
+- Example:
+  ```sql
+  WITH CTE AS (
+      SELECT column1, column2
+      FROM table_name
+  )
+  SELECT * FROM CTE;
+  ```
+
+### 54. What is a UNION in SQL, and how is it used?
+- The UNION operator is used to combine the result sets of two or more SELECT statements.
+- Each SELECT statement within the UNION must have the same number of columns in the same order, and the columns must have compatible data types.
+- UNION removes duplicate rows by default. To include duplicate rows, use UNION ALL.
+- Example:
+  ```sql
+  SELECT column1, column2 FROM table1
+  UNION
+  SELECT column1, column2 FROM table2;
+  ```
+
+### 55. What is a JOIN in SQL, and what types of JOINs are there?
+- A JOIN is a SQL operation used to combine rows from two or more tables based on a related column.
+- Types of JOINs include:
+  - **INNER JOIN**: Returns only matching rows from both tables.
+  - **LEFT JOIN (LEFT OUTER JOIN)**: Returns all rows from the left table and matching rows from the right table, with NULLs for non-matching rows.
+  - **RIGHT JOIN (RIGHT OUTER JOIN)**: Returns all rows from the right table and matching rows from the left table, with NULLs for non-matching rows.
+  - **FULL JOIN (FULL OUTER JOIN)**: Returns all rows when there is a match in either left or right table, with NULLs for non-matching rows.
+  - **CROSS JOIN**: Returns the Cartesian product of both tables, combining all rows from the left table with all rows from the right table.
+
+### 56. What is a subquery in SQL, and how is it used?
+- A subquery is a query nested within another SQL query.
+- Subqueries can be used in SELECT, INSERT, UPDATE, and DELETE statements.
+- They can return a single value, a row, or a table.
+- Subqueries are used to perform operations that require the results of another query, such as filtering, calculating, or validating data.
+
+### 57. What is the difference between HAVING and WHERE clauses in SQL?
+- **WHERE**: Filters rows before any groupings are made. It is used to specify conditions on individual rows.
+- **HAVING**: Filters groups after the `GROUP BY` clause has been applied. It is used to specify conditions on groups.
+- Example:
+  ```sql
+  SELECT department, COUNT(*)
+  FROM employees
+  WHERE salary > 50000
+  GROUP BY department
+  HAVING COUNT(*) > 10;
+  ```
+
+### 58. What is an index scan, and how does it differ from an index seek?
+- **Index Scan**:
+  - Reads all rows in the index to find the ones that satisfy the query condition.
+  - Generally slower than an index seek, especially for large tables.
+  - Used when the query retrieves a large portion of the table or when no suitable index exists.
+- **Index Seek**:
+  - Efficiently retrieves rows from the index based on the indexed column.
+  - Generally faster because it directly locates the rows that satisfy the query condition.
+  - Used when the query retrieves a small subset of rows based on the index key.
+
+### 59. What is a covering index in SQL Server?
+- A covering index is a non-clustered index that includes all the columns referenced in a query, either in the index key or as included columns.
+- It can significantly improve query performance by allowing the database engine to retrieve all necessary data from the index without accessing the base table.
+- Covering indexes reduce I/O operations and improve query efficiency.
+- Example:
+  ```sql
+  CREATE INDEX idx_covering ON table_name (column1) INCLUDE (column2, column3);
+  ```
+
+### 60. What is database normalization, and why is it important?
+- Database normalization is the process of organizing data to reduce redundancy and improve data integrity.
+- It involves dividing tables into smaller, related tables and defining relationships between them.
+- Normalization ensures data consistency, minimizes duplication, and simplifies data maintenance.
+- Normalized databases are easier to query, update, and maintain, reducing the risk of data anomalies and improving overall database performance.
+
+### 61. What is denormalization, and why would you use it?
+- Denormalization is the process of combining normalized tables to improve read performance and simplify queries.
+- It involves adding redundant data to reduce the number of joins required to retrieve related data.
+- Denormalization is used when read performance is a higher priority than data redundancy, such as in reporting systems and data warehouses.
+- While denormalization can improve query performance, it can also complicate data maintenance and increase the risk of data anomalies.
+
+### 62. What is a schema in SQL Server?
+- A schema is a logical container for database objects such as tables, views, stored procedures, and functions.
+- It helps organize and manage database objects, providing a way to group related objects together.
+- Schemas improve security by allowing you to define permissions at the schema level, controlling access to the contained objects.
+- Example: Creating a schema and a table within it:
+  ```sql
+  CREATE SCHEMA sales;
+  CREATE TABLE sales.customers (ID INT, Name NVARCHAR(100));
+  ```
+
+### 63. What is the difference between UNION and UNION ALL in SQL?
+- **UNION**:
+  - Combines the result sets of two or more SELECT statements.
+  - Removes duplicate rows from the combined result set.
+  - Performs an implicit DISTINCT operation.
+- **UNION ALL**:
+  - Combines the result sets of two or more SELECT statements.
+  - Includes all rows from the combined result set, including duplicates.
+  - Does not perform a DISTINCT operation, making it faster than UNION.
+
+### 64. What is the difference between a primary key and a unique key in SQL Server?
+- **Primary Key**:
+  - Uniquely identifies each row in a table.
+  - Cannot contain NULL values.
+  - Each table can have only one primary key.
+  - Implicitly creates a clustered index unless specified otherwise.
+- **Unique Key**:
+  - Ensures that all values in the column(s) are unique.
+  - Can contain one NULL value (for a single-column unique key).
+  - A table can have multiple unique keys.
+  - Typically creates a non-clustered index.
+
+### 65. What is referential integrity in SQL Server?
+- Referential integrity ensures that relationships between tables remain consistent.
+- It is enforced using foreign keys, which link columns in one table to the primary key or unique key columns in another table.
+- Referential integrity prevents orphaned records and maintains data consistency across related tables.
+- Cascading actions (CASCADE DELETE and CASCADE UPDATE) can be defined to automatically propagate changes from the parent table to the child table.
+
+### 66. What is a stored procedure in SQL Server, and what are its advantages?
+- A stored procedure is a precompiled collection of one or more SQL statements that can be executed as a single unit.
+- Advantages of stored procedures include:
+  - Improved performance due to precompilation.
+  - Reduced network traffic by executing multiple statements in a single call.
+  - Enhanced security by encapsulating business logic and controlling access to data.
+  - Easier maintenance and reusability of code.
+
+### 67. What is a trigger in SQL Server, and what are its types?
+- A trigger is a special type of stored procedure that automatically executes in response to certain events on a table or view.
+- Types of triggers include:
+  - **DML Triggers**: Execute in response to data manipulation events (INSERT, UPDATE, DELETE).
+  - **DDL Triggers**: Execute in response to data definition events (CREATE, ALTER, DROP).
+  - **Logon Triggers**: Execute in response to logon events.
+- Triggers enforce business rules, maintain data integrity, and automate audit tasks.
+
+### 68. What is the purpose of the COALESCE function in SQL Server?
+- The COALESCE function returns the first non-null value from a list of expressions.
+- It is used to handle null values and provide default values when data is missing.
+- COALESCE simplifies conditional logic in queries by avoiding complex CASE expressions.
+- Example:
+  ```sql
+  SELECT COALESCE(column
+
+1, column2, 'default value') AS result FROM table_name;
+  ```
+
+### 69. What are the ACID properties in SQL Server, and why are they important?
+- ACID properties ensure reliable processing of database transactions.
+  - **Atomicity**: Ensures that a transaction is all-or-nothing; it is fully completed or fully rolled back.
+  - **Consistency**: Ensures that a transaction brings the database from one valid state to another, maintaining data integrity.
+  - **Isolation**: Ensures that transactions are executed in isolation, preventing concurrent transactions from interfering with each other.
+  - **Durability**: Ensures that once a transaction is committed, its changes are permanently saved, even in the event of a system failure.
+- ACID properties are crucial for maintaining data reliability, consistency, and integrity in multi-user environments.
+
+### 70. What is a view in SQL Server, and how does it differ from a table?
+- A view is a virtual table that provides a specific representation of data from one or more tables.
+- Views do not store data themselves but retrieve data dynamically when queried.
+- Views can simplify complex queries, provide a level of abstraction, and enhance security by restricting access to specific data.
+- Unlike tables, views cannot have indexes, constraints, or triggers directly defined on them.
+
+### 71. What is a common table expression (CTE) in SQL, and how is it used?
+- A CTE is a temporary result set defined within a SELECT, INSERT, UPDATE, or DELETE statement.
+- CTEs improve the readability and maintainability of complex queries by breaking them into simpler parts.
+- CTEs can be recursive, allowing for operations like hierarchical data retrieval.
+- Example:
+  ```sql
+  WITH CTE AS (
+      SELECT column1, column2
+      FROM table_name
+  )
+  SELECT * FROM CTE;
+  ```
+
+### 72. What is a cross join in SQL, and how does it work?
+- A cross join returns the Cartesian product of two tables, combining all rows from the first table with all rows from the second table.
+- Cross joins do not require a join condition and can result in large result sets.
+- Example:
+  ```sql
+  SELECT *
+  FROM table1
+  CROSS JOIN table2;
+  ```
+
+### 73. What is a composite key in SQL Server?
+- A composite key is a primary key or unique key that consists of two or more columns.
+- Composite keys ensure the uniqueness of rows based on the combination of values in multiple columns.
+- They are used when a single column is insufficient to uniquely identify rows.
+- Example:
+  ```sql
+  CREATE TABLE table_name (
+      column1 INT,
+      column2 INT,
+      PRIMARY KEY (column1, column2)
+  );
+  ```
+
+### 74. What is a clustered index in SQL Server?
+- A clustered index determines the physical order of data in a table.
+- Each table can have only one clustered index, typically on the primary key.
+- The data rows are stored in the order of the clustered index key values.
+- Clustered indexes improve query performance for range queries and sorting operations.
+
+### 75. What is a non-clustered index in SQL Server?
+- A non-clustered index is a separate structure from the data rows that stores the index key values and pointers to the actual data.
+- A table can have multiple non-clustered indexes.
+- Non-clustered indexes improve query performance for specific columns frequently used in search conditions.
+- Example:
+  ```sql
+  CREATE INDEX idx_name ON table_name (column_name);
+  ```
+
+### 76. What is the difference between DELETE and TRUNCATE commands in SQL Server?
+- **DELETE**:
+  - Removes rows from a table based on a condition.
+  - Can be rolled back if used within a transaction.
+  - Triggers and constraints are enforced.
+  - Example: `DELETE FROM table_name WHERE condition;`
+- **TRUNCATE**:
+  - Removes all rows from a table without logging individual row deletions.
+  - Cannot be rolled back if not used within a transaction.
+  - Triggers are not fired.
+  - Resets identity columns.
+  - Example: `TRUNCATE TABLE table_name;`
+
+### 77. What is the difference between DROP and TRUNCATE commands in SQL Server?
+- **DROP**:
+  - Removes an entire database object (e.g., table, view, index) from the database.
+  - Cannot be rolled back once executed.
+  - Example: `DROP TABLE table_name;`
+- **TRUNCATE**:
+  - Removes all rows from a table but retains the table structure for future use.
+  - Cannot be rolled back if not used within a transaction.
+  - Example: `TRUNCATE TABLE table_name;`
+
+### 78. What is a self-join in SQL Server?
+- A self-join is a join of a table with itself.
+- It is used to compare rows within the same table or retrieve hierarchical data.
+- A self-join requires table aliases to distinguish the different instances of the same table.
+- Example:
+  ```sql
+  SELECT A.column1, B.column2
+  FROM table_name A
+  JOIN table_name B ON A.id = B.parent_id;
+  ```
+
+### 79. What is a subquery in SQL, and how is it used?
+- A subquery is a query nested within another SQL query.
+- Subqueries can return single values, multiple values, or entire result sets.
+- They are used in SELECT, INSERT, UPDATE, and DELETE statements for filtering, calculating, or validating data.
+- Example:
+  ```sql
+  SELECT column1
+  FROM table_name
+  WHERE column2 = (SELECT MAX(column2) FROM table_name);
+  ```
+
+### 80. What is the difference between a local temporary table and a global temporary table in SQL Server?
+- **Local Temporary Table**:
+  - Prefixed with `#`.
+  - Visible only to the session that created it.
+  - Automatically dropped when the session ends.
+  - Example: `CREATE TABLE #temp_table (column1 INT);`
+- **Global Temporary Table**:
+  - Prefixed with `##`.
+  - Visible to all sessions.
+  - Dropped when the last session referencing it ends.
+  - Example: `CREATE TABLE ##global_temp_table (column1 INT);`
+
+### 81. What are the differences between DDL and DML commands in SQL?
+- **DDL (Data Definition Language)**:
+  - Used to define, alter, and manage database objects.
+  - Includes commands like CREATE, ALTER, DROP, and TRUNCATE.
+  - Example: `CREATE TABLE table_name (column1 INT);`
+- **DML (Data Manipulation Language)**:
+  - Used to manipulate data within database objects.
+  - Includes commands like SELECT, INSERT, UPDATE, and DELETE.
+  - Example: `INSERT INTO table_name (column1) VALUES (1);`
+
+### 82. What is a correlated subquery in SQL, and how is it different from a regular subquery?
+- A correlated subquery is a subquery that references columns from the outer query.
+- It is evaluated once for each row processed by the outer query.
+- Correlated subqueries are used for row-by-row comparisons and calculations.
+- Example:
+  ```sql
+  SELECT column1
+  FROM table_name A
+  WHERE EXISTS (
+      SELECT 1
+      FROM table_name B
+      WHERE B.column2 = A.column2
+  );
+  ```
+
+### 83. What is a derived table in SQL, and how is it used?
+- A derived table is a subquery used in the FROM clause of a SQL query.
+- It provides a temporary result set that can be queried further.
+- Derived tables simplify complex queries by breaking them into manageable parts.
+- Example:
+  ```sql
+  SELECT *
+  FROM (
+      SELECT column1, column2
+      FROM table_name
+  ) AS derived_table;
+  ```
+
+### 84. What is a scalar function in SQL Server?
+- A scalar function is a user-defined function that returns a single value.
+- Scalar functions can accept parameters and perform calculations, transformations, or validations.
+- They can be used in SELECT, WHERE, and other SQL clauses.
+- Example:
+  ```sql
+  CREATE FUNCTION udf_add (@a INT, @b INT)
+  RETURNS INT
+  AS
+  BEGIN
+      RETURN @a + @b;
+  END;
+  ```
+
+### 85. What is a table-valued function in SQL Server?
+- A table-valued function is a user-defined function that returns a table.
+- It can be used as a table in SQL queries, providing a dynamic result set.
+- Table-valued functions can accept parameters and perform operations like joins, filtering, and aggregations.
+- Example:
+  ```sql
+  CREATE FUNCTION udf_get_table ()
+  RETURNS TABLE
+  AS
+  RETURN (
+      SELECT column1, column2
+      FROM table_name
+  );
+  ```
+
+### 86. What is a window function in SQL, and how is it used?
+- A window function performs calculations across a set of table rows related to the current row.
+- It provides aggregated values without collapsing rows, allowing for more complex analytics.
+- Common window functions include ROW_NUMBER(), RANK(), DENSE_RANK(), and aggregate functions with the OVER() clause.
+- Example:
+  ```sql
+  SELECT column1,
+         ROW_NUMBER() OVER (PARTITION BY column2 ORDER BY column3) AS row_num
+  FROM table_name;
+  ```
+
+### 87. What is a pivot table in SQL, and how is it used?
+- A pivot table transforms rows into columns, allowing for cross-tabulation of data.
+- It is used to aggregate and summarize data for reporting and analysis.
+- SQL Server provides
+
+ the PIVOT operator for creating pivot tables.
+- Example:
+  ```sql
+  SELECT *
+  FROM (
+      SELECT column1, column2, column3
+      FROM table_name
+  ) AS source_table
+  PIVOT (
+      SUM(column3)
+      FOR column2 IN ([value1], [value2], [value3])
+  ) AS pivot_table;
+  ```
+
+### 88. What is an unpivot table in SQL, and how is it used?
+- An unpivot table transforms columns into rows, reversing the pivot operation.
+- It is used to normalize data by converting wide tables into long tables.
+- SQL Server provides the UNPIVOT operator for creating unpivot tables.
+- Example:
+  ```sql
+  SELECT column1, column2, column3
+  FROM table_name
+  UNPIVOT (
+      column3 FOR column2 IN (column2_1, column2_2, column2_3)
+  ) AS unpivot_table;
+  ```
+
+### 89. What is a recursive CTE in SQL Server, and how is it used?
+- A recursive CTE is a common table expression that references itself to perform iterative processing.
+- It is used for hierarchical data retrieval, such as organizational charts and tree structures.
+- Recursive CTEs consist of an anchor member (base query) and a recursive member (iterative query).
+- Example:
+  ```sql
+  WITH RecursiveCTE AS (
+      SELECT column1, column2
+      FROM table_name
+      WHERE condition
+      UNION ALL
+      SELECT column1, column2
+      FROM table_name
+      JOIN RecursiveCTE ON table_name.column1 = RecursiveCTE.column2
+  )
+  SELECT * FROM RecursiveCTE;
+  ```
+
+### 90. What is a materialized view in SQL Server, and how is it different from a regular view?
+- A materialized view (indexed view) stores the result set of a query physically, improving read performance.
+- Unlike regular views, materialized views are refreshed periodically to reflect changes in the base tables.
+- They are used for performance optimization, especially in data warehousing and reporting scenarios.
+- Example:
+  ```sql
+  CREATE VIEW materialized_view_name
+  WITH SCHEMABINDING
+  AS
+  SELECT column1, column2, COUNT_BIG(*)
+  FROM table_name
+  GROUP BY column1, column2;
+  CREATE UNIQUE CLUSTERED INDEX idx_materialized_view
+  ON materialized_view_name (column1, column2);
+  ```
+
+### 91. What is a table variable in SQL Server, and how is it different from a temporary table?
+- A table variable is a variable that stores a result set for the duration of a batch or stored procedure.
+- It is declared using the `DECLARE` statement and is stored in memory.
+- Table variables are less resource-intensive and have a smaller scope than temporary tables.
+- Example:
+  ```sql
+  DECLARE @table_variable TABLE (column1 INT, column2 NVARCHAR(100));
+  ```
+
+### 92. What is a data type in SQL, and why is it important?
+- A data type defines the kind of data that can be stored in a column or variable.
+- It ensures data integrity by restricting the type and format of data values.
+- Common data types include INT, VARCHAR, DATE, and FLOAT.
+- Proper data type selection improves database performance and storage efficiency.
+
+### 93. What is a constraint in SQL Server, and what types are there?
+- A constraint is a rule enforced on data columns to ensure data integrity and consistency.
+- Types of constraints include:
+  - **Primary Key**: Uniquely identifies each row in a table.
+  - **Foreign Key**: Enforces referential integrity between tables.
+  - **Unique**: Ensures all values in a column are unique.
+  - **Check**: Ensures that all values in a column satisfy a specific condition.
+  - **Default**: Provides a default value for a column if no value is specified.
+  - **Not Null**: Ensures that a column cannot contain NULL values.
+
+### 94. What is a default constraint in SQL Server, and how is it used?
+- A default constraint provides a default value for a column if no value is specified during an insert operation.
+- It ensures that columns have a valid value when no explicit value is provided.
+- Default constraints are defined using the `DEFAULT` keyword.
+- Example:
+  ```sql
+  CREATE TABLE table_name (
+      column1 INT DEFAULT 0,
+      column2 NVARCHAR(100) DEFAULT 'N/A'
+  );
+  ```
+
+### 95. What is a unique constraint in SQL Server, and how is it used?
+- A unique constraint ensures that all values in a column or a combination of columns are unique.
+- It prevents duplicate values and enforces data integrity.
+- Unique constraints can be defined using the `UNIQUE` keyword.
+- Example:
+  ```sql
+  CREATE TABLE table_name (
+      column1 INT,
+      column2 NVARCHAR(100),
+      UNIQUE (column1, column2)
+  );
+  ```
+
+### 96. What is the difference between a primary key constraint and a unique constraint in SQL Server?
+- **Primary Key Constraint**:
+  - Ensures that each row in a table is uniquely identified.
+  - Cannot contain NULL values.
+  - Each table can have only one primary key.
+  - Implicitly creates a clustered index unless specified otherwise.
+- **Unique Constraint**:
+  - Ensures that all values in the column(s) are unique.
+  - Can contain one NULL value (for a single-column unique key).
+  - A table can have multiple unique constraints.
+  - Typically creates a non-clustered index.
+
+### 97. What is a foreign key constraint in SQL Server?
+- A foreign key constraint enforces referential integrity between tables by linking columns in one table to the primary key or unique key columns in another table.
+- It ensures that the values in the foreign key column(s) match values in the referenced primary or unique key column(s).
+- Foreign key constraints prevent orphaned records and maintain data consistency across related tables.
+- Example:
+  ```sql
+  CREATE TABLE child_table (
+      child_id INT,
+      parent_id INT,
+      FOREIGN KEY (parent_id) REFERENCES parent_table(parent_id)
+  );
+  ```
+
+### 98. What is the difference between a clustered index and a non-clustered index in SQL Server?
+- **Clustered Index**:
+  - Determines the physical order of data in a table.
+  - Each table can have only one clustered index.
+  - Data rows are stored in the order of the clustered index key values.
+  - Improves query performance for range queries and sorting operations.
+- **Non-Clustered Index**:
+  - A separate structure from the data rows that stores the index key values and pointers to the actual data.
+  - A table can have multiple non-clustered indexes.
+  - Improves query performance for specific columns frequently used in search conditions.
+
+### 99. What is the difference between a view and a materialized view in SQL Server?
+- **View**:
+  - A virtual table that provides a specific representation of data from one or more tables.
+  - Does not store data itself; retrieves data dynamically when queried.
+  - Simplifies complex queries, provides abstraction, and enhances security.
+- **Materialized View (Indexed View)**:
+  - Stores the result set of a query physically, improving read performance.
+  - Requires periodic refreshes to reflect changes in the base tables.
+  - Used for performance optimization, especially in data warehousing and reporting scenarios.
+
+### 100. What is the difference between a scalar function and a table-valued function in SQL Server?
+- **Scalar Function**:
+  - Returns a single value.
+  - Can accept parameters and perform calculations, transformations, or validations.
+  - Can be used in SELECT, WHERE, and other SQL clauses.
+  - Example: 
+    ```sql
+    CREATE FUNCTION udf_add (@a INT, @b INT)
+    RETURNS INT
+    AS
+    BEGIN
+        RETURN @a + @b;
+    END;
+    ```
+- **Table-Valued Function**:
+  - Returns a table.
+  - Can accept parameters and perform operations like joins, filtering, and aggregations.
+  - Can be used as a table in SQL queries, providing a dynamic result set.
+  - Example:
+    ```sql
+    CREATE FUNCTION udf_get_table ()
+    RETURNS TABLE
+    AS
+    RETURN (
+        SELECT column1, column2
+        FROM table_name
+    );
+    ```
+
 
