@@ -214,7 +214,7 @@
   - Removes all rows from a table without removing the table itself.
   - Resets identity columns if they exist.
   - Can be faster than DELETE but does not remove the table schema.
-
+# This is an update
 ### 34. What is a trigger in SQL Server?
 - A trigger is a special type of stored procedure that automatically executes in response to certain events on a table or view.
 - Triggers can be used to enforce business rules, data integrity, and audit changes.
